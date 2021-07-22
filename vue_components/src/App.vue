@@ -1,7 +1,14 @@
 <template>
   <div class="app">
-    <post-form @create="createPost"/>
-    <post-list :posts="posts"/>
+    <post-form
+
+        @create="createPost"
+    />
+
+    <post-list
+        :posts="posts"
+        @remove="removePost"
+    />
   </div>
 </template>
 
@@ -10,16 +17,16 @@
 
 import PostForm from "@/components/PostForm";
 import PostList from "@/components/PostList";
-const user =
-    {
-      "id": 1,
-      "name": "Rick Sanchez",
-      "status": "Alive",
-      "species": "Human",
-      "type": "",
-      "gender": "Male",
-      "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-    }
+// const user =
+//     {
+//       "id": 1,
+//       "name": "Rick Sanchez",
+//       "status": "Alive",
+//       "species": "Human",
+//       "type": "",
+//       "gender": "Male",
+//       "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+//     }
 
 
 export default {
@@ -27,13 +34,18 @@ export default {
   data() {
     return {
       posts: [
-        user,
+        {  id: 1, name: 'Rick Sanchez', gender: 'Male'   },
+        {  id: 1, name: 'Eminem Sanchez', gender: 'Male'   },
+        {  id: 1, name: 'Jay-Z Sanchez', gender: 'Male'   },
       ],
     }
   },
   methods: {
     createPost(user) {
       this.posts.push(user)
+    },
+    removePost(user) {
+      this.posts = this.posts.filter(u => u.id !== user.id)
     }
   }
 }

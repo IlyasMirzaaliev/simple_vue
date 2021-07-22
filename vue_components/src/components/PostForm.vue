@@ -10,7 +10,7 @@
     <my-input
         v-model="user.gender"
         type="text"
-        placeholder="Last Name"/>
+        placeholder="Gender"/>
 <!--    <input-->
 <!--        type="file"-->
 <!--        multiple-->
@@ -38,7 +38,7 @@ export default {
   methods: {
     createPost() {
       this.user.id = Date.now()
-      this.$emit('create',this.user)
+      this.$emit('create',this.user) //<!-- Передаем родителю выше App.vue -->
       this.user = {
         name: '',
         gender: '',

@@ -6,7 +6,7 @@
 export default {
   name: "my-input",
   props : {
-    modelValue: []
+    modelValue: [String, Number]
   },
   methods: {
     updateInput(event) {

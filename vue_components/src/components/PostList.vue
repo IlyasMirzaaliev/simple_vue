@@ -4,6 +4,8 @@
     <post-item
         v-for="user in posts"
         :user="user"
+        :key="user.id"
+        @remove="$emit('remove', user)"
     />
   </div>
 
@@ -11,6 +13,7 @@
 
 <script>
 import PostItem from "@/components/PostItem";
+
 export default {
   name: "PostList",
   components: {PostItem},
@@ -19,7 +22,7 @@ export default {
       type: Array,
       required: true
     }
-  }
+  },
 }
 </script>
 
