@@ -5,7 +5,7 @@
         v-for="user in posts"
         :user="user"
         :key="user.id"
-        @remove="$emit('remove', user)"
+        @remove="$emit('remove', user)" <!-- Передаем выше родителю App --> 
     />
   </div>
 
