@@ -3,6 +3,7 @@
       <h1>Post List</h1>
     <my-button
     @click="showDialog"
+    style="margin: 12px 0;"
     >
       Create Post
     </my-button>
@@ -13,11 +14,11 @@
     </my-dialog>
 
 
-
     <post-list
         :posts="posts"
         @remove="removePost"
     />
+
   </div>
 </template>
 
@@ -28,16 +29,7 @@ import PostForm from "@/components/PostForm";
 import PostList from "@/components/PostList";
 import MyDialog from "@/components/MyDialog";
 import MyButton from "@/components/UI/MyButton";
-// const user =
-//     {
-//       "id": 1,
-//       "name": "Rick Sanchez",
-//       "status": "Alive",
-//       "species": "Human",
-//       "type": "",
-//       "gender": "Male",
-//       "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-//     }
+import axios from "axios";
 
 
 export default {
@@ -48,17 +40,31 @@ export default {
       dialogVisible: false
     }
   },
+
   methods: {
     createPost(user) {
       this.posts.push(user)
+      this.dialogVisible = false
     },
     removePost(user) {
       this.posts = this.posts.filter(u => u.id !== user.id)
     },
     showDialog() {
       this.dialogVisible = true
+    },
+    async fetchPosts() {
+      try {
+        const response = await axios.get('https://rickandmortyapi.com/api/character')
+        this.posts =  response.data.results
+      }catch (e) {
+        console.log(e)
+      }
     }
-  }
+  },
+  mounted() {
+    this.fetchPosts()
+  },
+
 }
 
 

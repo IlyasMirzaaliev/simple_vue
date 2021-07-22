@@ -3,9 +3,9 @@
     <div>
       <div><strong>Name:</strong> <strong>{{ user.name }}</strong></div>
       <div><strong>Gender:</strong> <strong>{{ user.gender }}</strong></div>
-<!--      <div class="img">-->
-<!--        <img :src="user.image" :alt="user.image">-->
-<!--      </div>-->
+      <div class="img">
+        <img :src="user.image" :alt="user.image">
+      </div>
     </div>
       <div >
         <my-button
