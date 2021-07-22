@@ -2,27 +2,25 @@
   <form action="" @submit.prevent>
     <h2>Create Hero</h2>
 
-    <input
+    <my-input
         v-model="user.name"
-        class="input"
         type="text"
-        placeholder="Name">
+        placeholder="Name" />
 
-    <input
+    <my-input
         v-model="user.gender"
-        class="input"
         type="text"
-        placeholder="Last Name">
+        placeholder="Last Name"/>
 <!--    <input-->
 <!--        type="file"-->
 <!--        multiple-->
 <!--        class="upload">-->
-    <button
+    <my-button
         type="button"
-        class="btn"
+        style="align-self: flex-end; margin-top: 15px"
         @click="createPost"
     >Create
-    </button>
+    </my-button>
   </form>
 </template>
 
@@ -57,21 +55,9 @@ form {
   flex-direction: column;
 }
 
-.input {
-  width: 100%;
-  border: 1px solid teal;
-  padding: 10px 15px;
-  margin-top: 15px;
-}
 
-.btn {
-  align-self: flex-end;
-  margin-top: 15px;
-  padding: 10px 15px;
-  background: none;
-  color: teal;
-  border: 1px solid teal;
-}
+
+
 
 .upload {
   align-self: start;

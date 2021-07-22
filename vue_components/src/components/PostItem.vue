@@ -7,8 +7,8 @@
         <img :src="user.image" :alt="user.image">
       </div>
     </div>
-      <div class="user__btns">
-        <button>Delete</button>
+      <div >
+        <my-button>Delete</my-button>
       </div>
 
   </div>
