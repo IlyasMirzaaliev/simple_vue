@@ -1,9 +1,18 @@
 <template>
   <div class="app">
-    <post-form
+      <h1>Post List</h1>
+    <my-button
+    @click="showDialog"
+    >
+      Create Post
+    </my-button>
+    <my-dialog v-model:isShowDialog="dialogVisible" >
+      <post-form
+          @create="createPost"
+      />
+    </my-dialog>
 
-        @create="createPost"
-    />
+
 
     <post-list
         :posts="posts"
@@ -17,6 +26,8 @@
 
 import PostForm from "@/components/PostForm";
 import PostList from "@/components/PostList";
+import MyDialog from "@/components/MyDialog";
+import MyButton from "@/components/UI/MyButton";
 // const user =
 //     {
 //       "id": 1,
@@ -30,14 +41,11 @@ import PostList from "@/components/PostList";
 
 
 export default {
-  components: {PostList, PostForm},
+  components: {MyButton, MyDialog, PostList, PostForm},
   data() {
     return {
-      posts: [
-        {  id: 1, name: 'Rick Sanchez', gender: 'Male'   },
-        {  id: 1, name: 'Eminem Sanchez', gender: 'Male'   },
-        {  id: 1, name: 'Jay-Z Sanchez', gender: 'Male'   },
-      ],
+      posts: [],
+      dialogVisible: false
     }
   },
   methods: {
@@ -46,6 +54,9 @@ export default {
     },
     removePost(user) {
       this.posts = this.posts.filter(u => u.id !== user.id)
+    },
+    showDialog() {
+      this.dialogVisible = true
     }
   }
 }
@@ -59,25 +70,8 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
-
 .app {
   padding: 20px;
 }
 
-
-
-
-
-/*#nav {*/
-/*  padding: 30px;*/
-/*}*/
-
-/*#nav a {*/
-/*  font-weight: bold;*/
-/*  color: #2c3e50;*/
-/*}*/
-
-/*#nav a.router-link-exact-active {*/
-/*  color: #42b983;*/
-/*}*/
 </style>
