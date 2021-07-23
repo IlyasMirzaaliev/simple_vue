@@ -17,7 +17,12 @@
     <post-list
         :posts="posts"
         @remove="removePost"
+        v-if="!isLoading"
     />
+  <div v-else>
+    <my-loader/>
+  </div>
+
 
   </div>
 </template>
@@ -30,14 +35,16 @@ import PostList from "@/components/PostList";
 import MyDialog from "@/components/MyDialog";
 import MyButton from "@/components/UI/MyButton";
 import axios from "axios";
+import MyLoader from "@/components/UI/MyLoader";
 
 
 export default {
-  components: {MyButton, MyDialog, PostList, PostForm},
+  components: {MyLoader, MyButton, MyDialog, PostList, PostForm},
   data() {
     return {
       posts: [],
-      dialogVisible: false
+      dialogVisible: false,
+      isLoading: false
     }
   },
 
@@ -54,8 +61,13 @@ export default {
     },
     async fetchPosts() {
       try {
-        const response = await axios.get('https://rickandmortyapi.com/api/character')
-        this.posts =  response.data.results
+        this.isLoading = true
+        setTimeout(async () => {
+          const response = await axios.get('https://rickandmortyapi.com/api/character')
+          this.posts = response.data.results
+          this.isLoading = false
+        },1000)
+
       }catch (e) {
         console.log(e)
       }
