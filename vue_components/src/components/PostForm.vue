@@ -5,16 +5,16 @@
     <my-input
         v-model="user.name"
         type="text"
-        placeholder="Name" />
+        placeholder="Name"/>
 
     <my-input
         v-model="user.gender"
         type="text"
         placeholder="Gender"/>
-<!--    <input-->
-<!--        type="file"-->
-<!--        multiple-->
-<!--        class="upload">-->
+    <!--    <input-->
+    <!--        type="file"-->
+    <!--        multiple-->
+    <!--        class="upload">-->
     <my-button
         type="button"
         style="align-self: flex-end; margin-top: 15px"
@@ -38,14 +38,13 @@ export default {
   methods: {
     createPost() {
       this.user.id = Date.now()
-      this.$emit('create',this.user) //<!-- Передаем родителю выше App.vue -->
+      this.$emit('create', this.user) //<!-- Передаем родителю выше App.vue -->
       this.user = {
         name: '',
         gender: '',
       }
-
     }
-  }
+  },
 }
 </script>
 
@@ -54,9 +53,6 @@ form {
   display: flex;
   flex-direction: column;
 }
-
-
-
 
 
 .upload {

@@ -1,13 +1,20 @@
 <template>
   <div class="app">
-      <h1>Post List</h1>
-    <my-button
-    @click="showDialog"
-    style="margin: 12px 0;"
-    >
-      Create Post
-    </my-button>
-    <my-dialog v-model:isShowDialog="dialogVisible" >
+    <h1>Post List</h1>
+    <div class="app__btns">
+      <my-button
+          @click="showDialog"
+      >
+        Create Post
+      </my-button>
+      <my-select
+          v-model="selectedSort"
+          :options="sortOptions"
+      />
+    </div>
+
+
+    <my-dialog v-model:isShowDialog="dialogVisible">
       <post-form
           @create="createPost"
       />
@@ -15,13 +22,13 @@
 
 
     <post-list
-        :posts="posts"
+        :posts="sortedPosts"
         @remove="removePost"
         v-if="!isLoading"
     />
-  <div v-else>
-    <my-loader/>
-  </div>
+    <div v-else>
+      <my-loader/>
+    </div>
 
 
   </div>
@@ -36,18 +43,23 @@ import MyDialog from "@/components/MyDialog";
 import MyButton from "@/components/UI/MyButton";
 import axios from "axios";
 import MyLoader from "@/components/UI/MyLoader";
+import MySelect from "@/components/UI/MySelect";
 
 
 export default {
-  components: {MyLoader, MyButton, MyDialog, PostList, PostForm},
+  components: {MySelect, MyLoader, MyButton, MyDialog, PostList, PostForm},
   data() {
     return {
       posts: [],
       dialogVisible: false,
-      isLoading: false
+      isLoading: false,
+      selectedSort: '',
+      sortOptions: [
+        {value: 'name', name: 'By Name'},
+        {value: 'gender', name: 'By Gender'}
+      ],
     }
   },
-
   methods: {
     createPost(user) {
       this.posts.push(user)
@@ -66,16 +78,32 @@ export default {
           const response = await axios.get('https://rickandmortyapi.com/api/character')
           this.posts = response.data.results
           this.isLoading = false
-        },1000)
+        }, 1000)
 
-      }catch (e) {
+      } catch (e) {
         console.log(e)
+      } finally {
+        // this.isLoading = false
       }
     }
   },
   mounted() {
     this.fetchPosts()
   },
+  computed: {
+    sortedPosts() {
+      return [...this.posts].sort((arg1, arg2) => {
+        return arg1[this.selectedSort]?.localeCompare(arg2[this.selectedSort])
+      })
+    }
+  },
+  // watch: {
+  //   selectedSort(newValue) {
+  //     this.posts.sort((arg1, arg2) => {
+  //         return arg1[newValue]?.localeCompare(arg2[newValue])
+  //     })
+  //   }
+  // }
 
 }
 
@@ -88,8 +116,15 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
+
 .app {
   padding: 20px;
+}
+
+.app__btns {
+  margin: 12px 0;
+  display: flex;
+  justify-content: space-between;
 }
 
 </style>
