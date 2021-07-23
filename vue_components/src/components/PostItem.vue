@@ -1,11 +1,12 @@
 <template>
   <div class="post">
     <div>
-      <div><strong>Name:</strong> <strong>{{ user.name }}</strong></div>
-      <div><strong>Gender:</strong> <strong>{{ user.gender }}</strong></div>
-      <div class="img">
-        <img :src="user.image" :alt="user.image">
-      </div>
+      <div><strong>Post ID:</strong> <strong>{{ user.id }}</strong></div>
+      <div><strong>Name:</strong> <strong>{{ user.title }}</strong></div>
+      <div><strong>Gender:</strong> <strong>{{ user.body }}</strong></div>
+<!--      <div class="img">-->
+<!--        <img :src="user.image" :alt="user.image">-->
+<!--      </div>-->
     </div>
       <div >
         <my-button

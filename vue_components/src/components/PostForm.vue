@@ -3,12 +3,12 @@
     <h2>Create Hero</h2>
 
     <my-input
-        v-model="user.name"
+        v-model="user.title"
         type="text"
         placeholder="Name"/>
 
     <my-input
-        v-model="user.gender"
+        v-model="user.body"
         type="text"
         placeholder="Gender"/>
     <!--    <input-->
@@ -30,8 +30,8 @@ export default {
   data() {
     return {
       user: {
-        name: '',
-        gender: '',
+        title: '',
+        body: '',
       }
     }
   },
@@ -40,8 +40,8 @@ export default {
       this.user.id = Date.now()
       this.$emit('create', this.user) //<!-- Передаем родителю выше App.vue -->
       this.user = {
-        name: '',
-        gender: '',
+        title: '',
+        body: '',
       }
     }
   },

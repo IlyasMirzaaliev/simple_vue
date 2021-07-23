@@ -2,7 +2,7 @@
   <div class="app">
     <h1>Post List</h1>
     <my-input
-       v-model="searchQuery"
+        v-model="searchQuery"
     />
     <div class="app__btns">
       <my-button
@@ -33,6 +33,19 @@
       <my-loader/>
     </div>
 
+    <div class="page__wrapper">
+      <div
+          v-for="pageNumber in totalPage"
+          :key="pageNumber"
+          class="page"
+          :class="{
+            'current-page': page === pageNumber
+          }"
+          @click="changePage(pageNumber)"
+      >
+        {{ pageNumber }}
+      </div>
+    </div>
 
   </div>
 </template>
@@ -59,9 +72,12 @@ export default {
       isLoading: false,
       selectedSort: '',
       searchQuery: '',
+      page: 1,
+      limit: 10,
+      totalPage: 0,
       sortOptions: [
-        {value: 'name', name: 'By Name'},
-        {value: 'gender', name: 'By Gender'}
+        {value: 'title', name: 'By Title'},
+        {value: 'body', name: 'By Body'}
       ],
     }
   },
@@ -80,8 +96,14 @@ export default {
       try {
         this.isLoading = true
         setTimeout(async () => {
-          const response = await axios.get('https://rickandmortyapi.com/api/character')
-          this.posts = response.data.results
+          const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10', {
+            params: {
+              _page: this.page,
+              _limit: this.limit
+            }
+          });
+          this.totalPage = Math.ceil(response.headers ['x-total-count'] / this.limit)
+          this.posts = response.data
           this.isLoading = false
         }, 1000)
 
@@ -90,6 +112,10 @@ export default {
       } finally {
         // this.isLoading = false
       }
+    },
+    changePage(pageNumber) {
+      this.page = pageNumber
+      this.fetchPosts()
     }
   },
   mounted() {
@@ -102,7 +128,7 @@ export default {
       })
     },
     sortedAndSearchedPosts() {
-      return this.sortedPosts.filter(user => user.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
+      return this.sortedPosts.filter(user => user.title.toLowerCase().includes(this.searchQuery.toLowerCase()))
     }
   },
   // watch: {
@@ -133,6 +159,24 @@ export default {
   margin: 12px 0;
   display: flex;
   justify-content: space-between;
+}
+
+.page__wrapper {
+  display: flex;
+  margin-top: 15px;
+
+}
+
+.page {
+  align-self: end;
+  border: 1px solid black;
+  padding: 10px;
+
+
+}
+
+.current-page {
+  border: 2px solid teal;
 }
 
 </style>
