@@ -32,20 +32,21 @@
     <div v-else>
       <my-loader/>
     </div>
+    <div class="observer" ref="observer"></div>
 
-    <div class="page__wrapper">
-      <div
-          v-for="pageNumber in totalPage"
-          :key="pageNumber"
-          class="page"
-          :class="{
-            'current-page': page === pageNumber
-          }"
-          @click="changePage(pageNumber)"
-      >
-        {{ pageNumber }}
-      </div>
-    </div>
+<!--    <div class="page__wrapper">-->
+<!--      <div-->
+<!--          v-for="pageNumber in totalPage"-->
+<!--          :key="pageNumber"-->
+<!--          class="page"-->
+<!--          :class="{-->
+<!--            'current-page': page === pageNumber-->
+<!--          }"-->
+<!--          @click="changePage(pageNumber)"-->
+<!--      >-->
+<!--        {{ pageNumber }}-->
+<!--      </div>-->
+<!--    </div>-->
 
   </div>
 </template>
@@ -113,13 +114,46 @@ export default {
         // this.isLoading = false
       }
     },
-    changePage(pageNumber) {
-      this.page = pageNumber
-      this.fetchPosts()
-    }
+    async loadPost() {
+      try {
+        this.page += 1
+        // this.isLoading = true
+        setTimeout(async () => {
+          const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10', {
+            params: {
+              _page: this.page,
+              _limit: this.limit
+            }
+          });
+          this.totalPage = Math.ceil(response.headers ['x-total-count'] / this.limit)
+          this.posts = [...this.posts, ...response.data]
+          this.isLoading = false
+        }, 1000)
+
+      } catch (e) {
+        console.log(e)
+      } finally {
+        // this.isLoading = false
+      }
+    },
+    // changePage(pageNumber) {
+    //   this.page = pageNumber
+    //   this.fetchPosts()
+    // }
   },
   mounted() {
     this.fetchPosts()
+    const options = {
+      rootMargin: "0px",
+      threshold: 1.0
+    }
+    const callBack = (entries, observer) => {
+        if(entries[0].isIntersecting && this.posts.length < this.totalPage) {
+          this.loadPost()
+        }
+    }
+    const observer = new IntersectionObserver(callBack, options)
+    observer.observe(this.$refs.observer)
   },
   computed: {
     sortedPosts() {
@@ -178,5 +212,10 @@ export default {
 .current-page {
   border: 2px solid teal;
 }
+
+/*.observer {*/
+/*  height: 30px;*/
+/*  background: green;*/
+/*}*/
 
 </style>
